@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SocialApp</string>
+    <string name="title_activity_swipe_controller">SwipeControllerActivity</string>
+    <string name="tab_text_1">Channels</string>
+    <string name="tab_text_2">Socials</string>
+    <string name="title_activity_swipe_view">SwipeView</string>
 </resources>
