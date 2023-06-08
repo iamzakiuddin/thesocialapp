@@ -29,7 +29,7 @@ class DataAdapter(var context: Context, var type: Int, var body: Body) : Recycle
         if (type==0){
             holder.itemtitle?.text = body.channels[position].name
             holder.itemLogo?.let {
-                Glide.with(holder.itemView).load(body.channels[position].icon).placeholder(R.mipmap.ic_launcher).centerCrop().into(
+                Glide.with(holder.itemView).load(body.channels[position].icon).placeholder(R.mipmap.ic_launcher).centerInside().into(
                     it
                 )
             }
@@ -39,7 +39,7 @@ class DataAdapter(var context: Context, var type: Int, var body: Body) : Recycle
         }else{
             holder.itemtitle?.text = body.socials[position].name
             holder.itemLogo?.let {
-                Glide.with(holder.itemView).load(body.socials[position].icon).placeholder(R.mipmap.ic_launcher).centerCrop().into(
+                Glide.with(holder.itemView).load(body.socials[position].icon).placeholder(R.mipmap.ic_launcher).centerInside().into(
                     it
                 )
             }
