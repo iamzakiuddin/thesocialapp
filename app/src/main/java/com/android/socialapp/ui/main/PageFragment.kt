@@ -18,16 +18,11 @@ class PageFragment : Fragment() {
     private var _binding: FragmentSwipeViewBinding? = null
     private var dataAdapter:DataAdapter? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }*/
     }
 
     override fun onCreateView(
@@ -39,7 +34,7 @@ class PageFragment : Fragment() {
         val root = binding.root
         var position = arguments?.getInt(ARG_SECTION_NUMBER)
         var data= arguments?.getSerializable("data") as Body
-        dataAdapter = DataAdapter(position!!,data)
+        dataAdapter = DataAdapter(requireContext(),position!!,data)
         binding.listView.adapter = dataAdapter
         binding.listView.layoutManager = LinearLayoutManager(container?.context,LinearLayoutManager.VERTICAL,false)
         return root

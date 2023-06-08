@@ -10,8 +10,8 @@ import com.android.socialapp.models.Body
 interface DataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertData (bodyData: Body)
+    suspend fun insertData (bodyData: Body)
 
     @Query("SELECT * FROM Body")
-    fun getData () : List<Body>
+    suspend fun getData () : List<Body>
 }

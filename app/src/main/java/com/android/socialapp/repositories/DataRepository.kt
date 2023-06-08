@@ -1,49 +1,54 @@
 package com.android.socialapp.repositories
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.android.socialapp.models.Body
 import com.android.socialapp.models.Data
 import com.android.socialapp.network.DataApi
+import com.android.socialapp.network.NetworkResponse
 import com.android.socialapp.repositories.CacheRepository.DataDao
 import retrofit2.Response
+import java.lang.Exception
 import javax.inject.Inject
 
 
-class DataRepository @Inject constructor (private val dataApi: DataApi){
+class DataRepository @Inject constructor (private val dataApi: DataApi, private val dataDao: DataDao){
 
-    var remoteData = MutableLiveData<Body>()
+    var repoData = MutableLiveData<NetworkResponse<Body>>()
 
-   /* suspend fun getData(){
-        var data = db.getData()
-        if (data!=null){
-            if (data.isNotEmpty()){
-                val data = data[0]
-                remoteData.postValue(data)
-            }
+    suspend fun getDataFromRepo () {
+        var list = dataDao.getData()
+        if (!list.isNullOrEmpty()){
+            repoData.value = NetworkResponse.Success(list[0])
         }else{
             getDataFromRemote()
         }
-    }*/
+    }
      suspend fun getDataFromRemote (){
-        var response = dataApi.getUIData()
-         handleResponse(response)
+         try {
+             var response = dataApi.getUIData()
+             handleResponse(response)
+         }catch (ex: Exception){
+            repoData.value = NetworkResponse.Error("Something went wrong",null)
+         }
     }
 
 
     private suspend fun handleResponse(response: Response<Data>) {
         if (response.isSuccessful && response.body()!=null){
             if (response.body()?.body!=null){
-                remoteData.postValue(response.body()?.body)
-                //storingInLocalDB(response.body()?.body)
+                storingInLocalDB(response.body()?.body)
             }
+        }else if (response.errorBody()!=null){
+            repoData.value = NetworkResponse.Error(response.message(),null)
         }
     }
 
-  /*  private suspend fun storingInLocalDB(body: Body?) {
+    private suspend fun storingInLocalDB(body: Body?) {
         if (body!=null){
-            db.insertData(body)
-            getData()
+            dataDao.insertData(body)
+            getDataFromRepo()
         }
-    }*/
+    }
 
 }

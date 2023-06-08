@@ -33,5 +33,15 @@ class AppModule {
         return retrofitBuilder.build().create(DataApi::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideDb (@ApplicationContext context: Context) : AppDatabase{
+        return Room.databaseBuilder(context,AppDatabase::class.java,"localdb").build()
+    }
+
+    @Provides
+    fun provideDataDao (appDatabase: AppDatabase) : DataDao{
+        return appDatabase.dataDao()
+    }
 
 }
